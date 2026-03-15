@@ -9,11 +9,19 @@ output: html_document
 library(rvest)
 library(dplyr)
 library(xml2)
+library(stringr)
+library(chromote)
 ```
-
 
 ```{r}
 
+# Retrieve all report links
+
+reports <-read_pc_search_pages("https://www.pc.gov.au/inquiries-and-research/?status=Completed&tab=inquiries", 13) 
+
+```
+
+```{r}
 
 read_PC <- function(table, report_name){
   
