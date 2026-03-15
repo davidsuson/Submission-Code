@@ -7,8 +7,6 @@ read_pc_report_submissions <- function(submission_page_link){
   table_sections <- submission_page %>%
     html_elements(xpath = "//div[@data-state and h3]")
 
-  browser()
-
   read_tables <- lapply(table_sections, function(table_section) read_pc_report_submission_table(table_section))
 
   required_table <- read_tables %>%
@@ -24,14 +22,13 @@ read_pc_report_submission_table <- function(table_section){
   table_name <- table_section %>%
     html_elements("h3") %>%
     html_text2() %>%
-    gsub(" submissions \\(\\d+\\)", "", .)
+    gsub("\\(\\d+\\)", "", .) %>%
+    trimws()
 
   table <- table_section %>%
     html_element("table")
 
-
-  if (!(table_name %in% c("Initial", "Final"))){
-    # This handles brief comments table.
+  if (!grepl("submissions", tolower(table_name))){
     return(data.frame())
   }
 
@@ -49,13 +46,13 @@ read_pc_report_submission_table <- function(table_section){
   required_table <- table %>%
     rvest::html_table() %>%
     dplyr::mutate(
+      Pages = ifelse(!"Pages" %in% names(.), as.integer(NA), Pages),
       Submission_Period = table_name,
-      Received = as.Date(Received, tryFormats = c("%d/%m/%Y"))
+      Received = as.Date(Received, tryFormats = c("%d/%m/%Y")),
+      Pages = as.integer(Pages)
     ) %>%
     dplyr::select(-`No.`) %>%
     dplyr::rename(any_of(rename_vec))
-
-  browser()
 
   links <- table %>% html_elements("tr a") %>% html_attr("href")
 
