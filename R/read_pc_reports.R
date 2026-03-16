@@ -13,10 +13,11 @@ read_pc_reports.data.frame <- function(reports){
 
       valid_links <- valid_links(report_link)
 
-      if (length(valid_links) != 0){
+      if (length(valid_links) == 2){
 
         final_report_details <- tryCatch(
           error = function(cnd){
+            print(cnd)
             cli::cli_alert_danger("{report_name} at {report_link} failed to process.")
 
             final_report_details <- data.frame(

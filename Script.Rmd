@@ -20,7 +20,11 @@ library(chromote)
 reports <- read_pc_search_pages("https://www.pc.gov.au/inquiries-and-research/?year=1999%2C2000%2C2001%2C2002%2C2003%2C2004%2C2005%2C2006%2C2007%2C2008%2C2009%2C2010%2C2011%2C2012%2C2013%2C2014%2C2015%2C2016%2C2017%2C2018%2C2019%2C2020%2C2021%2C2022%2C2023%2C2024%2C2025&tab=inquiries", 10) 
 
 read_reports <- read_pc_reports(reports)
-
+unread_reports <- read_reports %>% 
+  dplyr::filter(Unknown_Error) %>% 
+  dplyr::select(Report_Name, Report_Link) %>% 
+  dplyr::rename(Name = "Report_Name",
+                Link = "Report_Link")
 
 # Two things
 # Get study report page (append submissions/)
