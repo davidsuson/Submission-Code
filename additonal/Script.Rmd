@@ -20,29 +20,17 @@ library(writexl)
 
 reports <- read_pc_search_pages("https://www.pc.gov.au/inquiries-and-research/?year=1999%2C2000%2C2001%2C2002%2C2003%2C2004%2C2005%2C2006%2C2007%2C2008%2C2009%2C2010%2C2011%2C2012%2C2013%2C2014%2C2015%2C2016%2C2017%2C2018%2C2019%2C2020%2C2021%2C2022%2C2023%2C2024%2C2025&tab=inquiries", 10) 
 
-writexl::write_xlsx(reports, "C:/Users/David/Desktop/TEPE.Code/additonal/pc_reports.xlsx")
+writexl::
 
-```
+all_reports <- read_pc_reports(reports)
 
-```{r}
-reports <- readxl::read_xlsx("C:/Users/David/Desktop/TEPE.Code/additonal/pc_reports.xlsx")
-all_submissions <- read_pc_reports(reports)
-```
-
-```{r}
-# Tests
-
-unread_reports <- all_submissions %>% 
+unread_reports <- all_reports %>% 
   dplyr::filter(Unknown_Error) %>% 
   dplyr::select(Report_Name, Report_Link) %>% 
   dplyr::rename(Name = "Report_Name",
                 Link = "Report_Link")
 
-other_odd_reports_to_test <- reports %>%
-  dplyr::filter(Link == "https://www.pc.gov.au/inquiries-and-research/black-coal")
-
-test_error <- read_pc_reports(other_odd_reports_to_test)
-
+other_odd_reports_to_test <- 
 
 # Two things
 # Get study report page (append submissions/)

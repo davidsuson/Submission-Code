@@ -4,8 +4,7 @@ read_pc_report_submissions <- function(submission_page_link){
 
   submission_page <- rvest::read_html(submission_page_link)
 
-  table_sections <- submission_page %>%
-    html_elements(xpath = "//div[@data-state and h3]")
+  table_sections <- find_table(submission_page)
 
   read_tables <- lapply(table_sections, function(table_section) read_pc_report_submission_table(table_section))
 
@@ -70,6 +69,8 @@ read_pc_report_submission_table <- function(table_section){
       Submission_Link = links
     ) %>%
     dplyr::filter(stringr::str_detect(Submission_Link, "pdf"))
+
+  browser()
 
   required_table
 
